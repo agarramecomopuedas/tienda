@@ -317,6 +317,39 @@
       background: var(--primary-pink-hover);
     }
 
+    /* BANNER INFORMATIVO SUSHI LIBRE */
+    .sushi-libre-banner {
+      background: linear-gradient(135deg, var(--primary-pink), var(--primary-pink-hover));
+      color: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 3rem 0;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+    }
+
+    .sushi-libre-banner h3 {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sushi-libre-banner p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .sushi-libre-price {
+      display: inline-block;
+      background: white;
+      color: var(--primary-pink-hover);
+      font-weight: bold;
+      font-size: 1.4rem;
+      padding: 0.4rem 1.2rem;
+      border-radius: 25px;
+      margin-top: 1rem;
+    }
+
     /* CARRITO FLOTANTE Y SIDEBAR */
     .cart-float-bar {
       position: fixed;
@@ -418,7 +451,7 @@
       font-size: 1rem;
     }
 
-    /* MODAL */
+    /* MODAL GENERAL */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -450,16 +483,36 @@
       outline: none;
     }
 
+    .custom-option-section {
+      margin-bottom: 1rem;
+    }
+
+    .custom-option-section h4 {
+      font-size: 0.95rem;
+      color: var(--primary-pink-hover);
+      margin-bottom: 0.4rem;
+    }
+
+    .custom-option-section label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+      cursor: pointer;
+    }
+
     .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
     .btn-cancel { flex: 1; background: #888; color: white; border: none; padding: 0.8rem; border-radius: 6px; cursor: pointer; }
     .btn-send { flex: 2; background: #25D366; color: white; border: none; padding: 0.8rem; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    .btn-confirm-custom { flex: 2; background: var(--primary-pink); color: white; border: none; padding: 0.8rem; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
     footer {
       background: var(--bg-white);
       border-top: 1px solid var(--border-color);
       padding: 2rem;
       text-align: center;
-      margin-top: 4rem;
+      margin-top: 2rem;
       color: var(--text-gray);
       font-size: 0.9rem;
     }
@@ -520,6 +573,15 @@
   <!-- CONTENEDOR PRINCIPAL -->
   <main class="catalog-container" id="catalog"></main>
 
+  <!-- CARTEL AVISO SUSHI LIBRE AL FINAL DEL CATÁLOGO -->
+  <div class="catalog-container">
+    <div class="sushi-libre-banner">
+      <h3>🍣 ¡SUSHI LIBRE TODOS LOS DÍAS!</h3>
+      <p>Disfrutá de la experiencia de sushi libre en nuestro local. Incluye postre a elección.</p>
+      <div class="sushi-libre-price">$37.000 por persona</div>
+    </div>
+  </div>
+
   <!-- BARRA FLOTANTE -->
   <div class="cart-float-bar" id="cartBar" style="display: none;">
     <div>
@@ -543,6 +605,35 @@
         <span id="sidebarTotal" style="color:var(--primary-pink-hover);">$0</span>
       </div>
       <button class="btn-checkout-wa" onclick="openOrderModal()"><i class="fa-brands fa-whatsapp"></i> Enviar Pedido por WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- MODAL SELECCIÓN PERSONALIZADA (PANCHO / BURGER) -->
+  <div class="modal-backdrop" id="customModal">
+    <div class="modal-content">
+      <h2 id="customModalTitle" style="font-family: var(--font-title); font-size: 1.8rem; color: var(--primary-pink-hover); margin-bottom: 1rem;">Elegí lo que lleva</h2>
+      
+      <div class="custom-option-section">
+        <h4>Base / Principal</h4>
+        <div id="mainOptionsContainer"></div>
+      </div>
+
+      <div class="custom-option-section">
+        <h4>Acompañamiento</h4>
+        <label><input type="radio" name="optAcc" value="Palta" checked> Palta</label>
+        <label><input type="radio" name="optAcc" value="Mango"> Mango</label>
+      </div>
+
+      <div class="custom-option-section">
+        <h4>Queso</h4>
+        <label><input type="radio" name="optQueso" value="Con queso" checked> Con queso</label>
+        <label><input type="radio" name="optQueso" value="Sin queso"> Sin queso</label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeCustomModal()">Cancelar</button>
+        <button class="btn-confirm-custom" onclick="confirmCustomAdd()">Agregar al pedido</button>
+      </div>
     </div>
   </div>
 
@@ -653,7 +744,7 @@
       { id: 91, name: "NIGUIRIS (5 piezas)", price: 15500, category: "otros", desc: "Arroz avinagrado cubierto con lámina de salmón fresco." },
 
       // TABLAS
-      { id: 100, name: "PROMO DEL DÍA (22 piezas)", price: 27000, category: "tablas", desc: "Tabla seleccionada de 22 piezas (delivery / take away)." },
+      { id: 100, name: "PROMO DEL DÍA (22 piezas)", price: 27000, category: "tablas", desc: "Tabla seleccionada de 22 piezas." },
       { id: 101, name: "DEGUSTACIÓN (12 piezas)", price: 17000, category: "tablas", desc: "Selección especial degustación 12 piezas." },
       { id: 102, name: "SOMOS ALGUNOS (48 piezas)", price: 78000, category: "tablas", desc: "4 Tropical, 4 Dragon, 4 B. Aires, 4 Phila, 4 Tamagos, 4 Limados, 4 Delicious, 8 NY Phila, 4 Crunch, 8 Hot." },
       { id: 103, name: "VINIMOS TODOS (80 piezas)", price: 135000, category: "tablas", desc: "8 Tropical, 8 Dragon, 8 B. Aires, 8 Phila, 8 Tamagos, 8 Limados, 8 Delicious, 8 NY Phila, 8 Palta Hot, 8 Crunch." },
@@ -668,10 +759,9 @@
       { id: 112, name: "TABLA CELI (32 piezas)", price: 54000, category: "tablas", desc: "2 Geishas, 2 Niguiris, 4 Tropical, 4 Phila, 4 Dragon, 4 B. Aires, 4 Dragon Salmón, 4 NY Phila, 4 Luisi." },
       { id: 113, name: "TABLA HOT AGARRAME (16 piezas)", price: 27000, category: "tablas", desc: "4 Palta Hot, 4 Hot Veggie, 4 Hot Huancaína, 4 Hot Perú." },
 
-      // LO MAS NUEVO
-      { id: 120, name: "1- SUSHI PANCHO", price: 10500, category: "lo-mas-nuevo", desc: "Proteína a elección (Salmón crudo, cocido, langostinos) + palta o mango + queso." },
-      { id: 121, name: "2- SUSHI BURGER", price: 10500, category: "lo-mas-nuevo", desc: "Elegí proteína (Salmón crudo, crocante, langostinos) + palta o mango + queso." },
-      { id: 122, name: "¡¡¡SUSHI LIBRE!!! (Incluye postre)", price: 37000, category: "lo-mas-nuevo", desc: "Comé todo el sushi libre que quieras todos los días. Incluye postre." },
+      // LO MAS NUEVO (PERSONALIZABLES)
+      { id: 120, name: "1- SUSHI PANCHO", price: 10500, category: "lo-mas-nuevo", desc: "Elegí qué ponerle (Salmón crudo, cocido, langostinos, etc.)", custom: true, type: "pancho" },
+      { id: 121, name: "2- SUSHI BURGER", price: 10500, category: "lo-mas-nuevo", desc: "Elegí qué ponerle (Salmón crudo, crocante, langostinos, etc.)", custom: true, type: "burger" },
 
       // POSTRES
       { id: 130, name: "Flan con dulce de leche", price: 5000, category: "postres", desc: "Flan casero tradicional con dulce de leche." },
@@ -681,6 +771,7 @@
 
     let cart = {};
     let currentCategory = 'all';
+    let currentCustomProd = null;
 
     function renderCatalog() {
       const catalogEl = document.getElementById('catalog');
@@ -698,7 +789,7 @@
         { id: 'veggie', title: '🌱 Vegetarianos' },
         { id: 'otros', title: '🥢 Geishas & Niguiris' },
         { id: 'tablas', title: '🍱 Tablas de Sushi' },
-        { id: 'lo-mas-nuevo', title: '🔥 Lo Más Nuevo & Sushi Libre' },
+        { id: 'lo-mas-nuevo', title: '🔥 Lo Más Nuevo' },
         { id: 'postres', title: '🍰 Postres' }
       ];
 
@@ -717,27 +808,40 @@
           grid.className = 'products-grid';
 
           filteredProds.forEach(prod => {
-            const qty = cart[prod.id] || 0;
             const card = document.createElement('div');
             card.className = 'product-card';
 
-            card.innerHTML = `
-              <div class="product-info">
-                <h3>${prod.name}</h3>
-                <div class="product-desc">${prod.desc}</div>
-                <div class="product-price">$${prod.price.toLocaleString('es-AR')}</div>
-              </div>
-              <div class="card-actions">
-                <div class="quantity-controls">
-                  <button onclick="changeQty(${prod.id}, -1)">-</button>
-                  <span id="qty-${prod.id}">${qty}</span>
-                  <button onclick="changeQty(${prod.id}, 1)">+</button>
+            if (prod.custom) {
+              card.innerHTML = `
+                <div class="product-info">
+                  <h3>${prod.name}</h3>
+                  <div class="product-desc">${prod.desc}</div>
+                  <div class="product-price">$${prod.price.toLocaleString('es-AR')}</div>
                 </div>
-                <button class="btn-add" onclick="changeQty(${prod.id}, 1)">
-                  ${qty > 0 ? 'Añadido' : 'Agregar'}
-                </button>
-              </div>
-            `;
+                <div class="card-actions">
+                  <button class="btn-add" onclick="openCustomModal(${prod.id})">Elegir y Agregar</button>
+                </div>
+              `;
+            } else {
+              const qty = cart[prod.id] ? cart[prod.id].qty : 0;
+              card.innerHTML = `
+                <div class="product-info">
+                  <h3>${prod.name}</h3>
+                  <div class="product-desc">${prod.desc}</div>
+                  <div class="product-price">$${prod.price.toLocaleString('es-AR')}</div>
+                </div>
+                <div class="card-actions">
+                  <div class="quantity-controls">
+                    <button onclick="changeQty('${prod.id}', -1)">-</button>
+                    <span id="qty-${prod.id}">${qty}</span>
+                    <button onclick="changeQty('${prod.id}', 1)">+</button>
+                  </div>
+                  <button class="btn-add" onclick="changeQty('${prod.id}', 1)">
+                    ${qty > 0 ? 'Añadido' : 'Agregar'}
+                  </button>
+                </div>
+              `;
+            }
             grid.appendChild(card);
           });
 
@@ -746,18 +850,86 @@
       });
     }
 
-    function changeQty(productId, change) {
-      const currentQty = cart[productId] || 0;
-      const newQty = Math.max(0, currentQty + change);
+    function openCustomModal(prodId) {
+      currentCustomProd = productsData.find(p => p.id === prodId);
+      if (!currentCustomProd) return;
 
-      if (newQty === 0) {
-        delete cart[productId];
+      document.getElementById('customModalTitle').innerText = currentCustomProd.name;
+      const container = document.getElementById('mainOptionsContainer');
+      container.innerHTML = '';
+
+      let options = [];
+      if (currentCustomProd.type === 'pancho') {
+        options = ["Salmón crudo", "Salmón cocido", "Langostinos ahumados", "Langostinos fritos"];
       } else {
-        cart[productId] = newQty;
+        options = ["Salmón crudo", "Salmón crocante", "Langostinos ahumados"];
       }
 
-      const qtySpan = document.getElementById(`qty-${productId}`);
-      if (qtySpan) qtySpan.innerText = newQty;
+      options.forEach((opt, idx) => {
+        container.innerHTML += `
+          <label><input type="radio" name="optMain" value="${opt}" ${idx===0?'checked':''}> ${opt}</label>
+        `;
+      });
+
+      document.getElementById('customModal').style.display = 'flex';
+    }
+
+    function closeCustomModal() {
+      document.getElementById('customModal').style.display = 'none';
+      currentCustomProd = null;
+    }
+
+    function confirmCustomAdd() {
+      if (!currentCustomProd) return;
+
+      const mainOpt = document.querySelector('input[name="optMain"]:checked').value;
+      const accOpt = document.querySelector('input[name="optAcc"]:checked').value;
+      const quesoOpt = document.querySelector('input[name="optQueso"]:checked').value;
+
+      const details = `${mainOpt}, ${accOpt}, ${quesoOpt}`;
+      const itemKey = `${currentCustomProd.id}_${details.replace(/ /g, '_')}`;
+
+      if (cart[itemKey]) {
+        cart[itemKey].qty += 1;
+      } else {
+        cart[itemKey] = {
+          id: currentCustomProd.id,
+          name: currentCustomProd.name,
+          price: currentCustomProd.price,
+          details: details,
+          qty: 1
+        };
+      }
+
+      closeCustomModal();
+      updateCartUI();
+    }
+
+    function changeQty(itemKey, change) {
+      if (!cart[itemKey]) {
+        const prod = productsData.find(p => p.id == itemKey);
+        if (prod) {
+          cart[itemKey] = {
+            id: prod.id,
+            name: prod.name,
+            price: prod.price,
+            details: "",
+            qty: 0
+          };
+        }
+      }
+
+      if (cart[itemKey]) {
+        cart[itemKey].qty = Math.max(0, cart[itemKey].qty + change);
+        if (cart[itemKey].qty === 0) {
+          delete cart[itemKey];
+        }
+      }
+
+      const qtySpan = document.getElementById(`qty-${itemKey}`);
+      if (qtySpan) {
+        qtySpan.innerText = cart[itemKey] ? cart[itemKey].qty : 0;
+      }
 
       updateCartUI();
     }
@@ -768,28 +940,26 @@
       const cartItemsContainer = document.getElementById('cartSidebarItems');
       cartItemsContainer.innerHTML = '';
 
-      for (const [id, qty] of Object.entries(cart)) {
-        const prod = productsData.find(p => p.id == id);
-        if (prod) {
-          totalItems += qty;
-          const subtotal = prod.price * qty;
-          totalPrice += subtotal;
+      for (const [key, item] of Object.entries(cart)) {
+        totalItems += item.qty;
+        const subtotal = item.price * item.qty;
+        totalPrice += subtotal;
 
-          const cartItem = document.createElement('div');
-          cartItem.className = 'cart-item';
-          cartItem.innerHTML = `
-            <div class="cart-item-details">
-              <div style="font-weight:bold; font-size:0.95rem;">${prod.name}</div>
-              <div style="color:var(--primary-pink-hover); font-size:0.9rem;">$${prod.price.toLocaleString('es-AR')} x ${qty}</div>
-            </div>
-            <div class="quantity-controls">
-              <button onclick="changeQty(${prod.id}, -1)">-</button>
-              <span>${qty}</span>
-              <button onclick="changeQty(${prod.id}, 1)">+</button>
-            </div>
-          `;
-          cartItemsContainer.appendChild(cartItem);
-        }
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+          <div class="cart-item-details">
+            <div style="font-weight:bold; font-size:0.95rem;">${item.name}</div>
+            ${item.details ? `<div style="font-size:0.8rem; color:var(--text-gray);">${item.details}</div>` : ''}
+            <div style="color:var(--primary-pink-hover); font-size:0.9rem; font-weight:bold;">$${item.price.toLocaleString('es-AR')} x ${item.qty}</div>
+          </div>
+          <div class="quantity-controls">
+            <button onclick="changeQty('${key}', -1)">-</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty('${key}', 1)">+</button>
+          </div>
+        `;
+        cartItemsContainer.appendChild(cartItem);
       }
 
       document.getElementById('headerCartCount').innerText = totalItems;
@@ -869,13 +1039,11 @@
       let orderDetails = "";
       let totalPrice = 0;
 
-      for (const [id, qty] of Object.entries(cart)) {
-        const prod = productsData.find(p => p.id == id);
-        if (prod) {
-          const itemTotal = prod.price * qty;
-          totalPrice += itemTotal;
-          orderDetails += `• ${qty}x ${prod.name} — $${itemTotal.toLocaleString('es-AR')}\n`;
-        }
+      for (const [key, item] of Object.entries(cart)) {
+        const itemTotal = item.price * item.qty;
+        totalPrice += itemTotal;
+        const detailsStr = item.details ? ` — ${item.details}` : '';
+        orderDetails += `• ${item.qty}x ${item.name}${detailsStr} — $${itemTotal.toLocaleString('es-AR')}\n`;
       }
 
       let message = `¡Hola *AGARRAME COMO PUEDAS*! 🍣🌸\nQuisiera realizar el siguiente pedido desde la web:\n\n`;
